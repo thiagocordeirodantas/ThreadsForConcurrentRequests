@@ -1,3 +1,5 @@
+export default imprimiCotacao
+
 const  lista = document.querySelector('[data-lista]')
 
 function imprimiCotacao(nome,valor){
