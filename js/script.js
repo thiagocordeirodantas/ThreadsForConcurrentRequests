@@ -1,28 +1,36 @@
-const graficoDolar = document.getElementById('graficoDolar')
+const graficoDolar = document.getElementById('graficoDolar');
 
 const graficoParaDolar = new Chart(graficoDolar, {
     type: 'line',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
+        labels: [],
+        datasets: [{
+            label: 'Dólar',
+            data: [],
+            borderWidth: 1
+        }]
     },
-  });
-
-  async function conectaAPI (){
-    const conecta = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL")
-    const conectaTraduzido = await conecta.json()
-    console.log(conectaTraduzido)
-  }
-
-function geraHorario(){
-    let data = new Date();
-    let horario = `${data.getHours()} ":" ${data.getMinutes()} ":" ${data.getSeconds()} `
-    console.log(horario)
-    return horario
+});
+setInterval(() => conectaAPI(), 5000);
+async function conectaAPI() {
+    const conecta = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
+    const conectaTraduzido = await conecta.json();
+    let tempo = geraHorario();
+    let valor = conectaTraduzido.USDBRL.ask;
+    adicionarDados(graficoParaDolar, tempo, valor);
 }
 
-geraHorario()
+function geraHorario() {
+    let data = new Date();
+    let horario = data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds();
+    console.log(horario);
+    return horario;
+}
+
+function adicionarDados(grafico, legenda, dados) {
+    grafico.data.labels.push(legenda);
+    grafico.data.datasets.forEach((dataset) => {
+        dataset.data.push(dados);
+    })
+    grafico.update();
+}
