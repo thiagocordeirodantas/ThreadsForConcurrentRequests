@@ -40,3 +40,16 @@ workerDolaar.addEventListener("message", event => {
     imprimiCotacao("dolar",valor);
     adicionarDados(graficoParaDolar,tempo,valor)
 })
+
+
+const graficoIene = document.getElementById('graficoIene');
+const graficoParaIene = new Chart(graficoIene, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Iene',
+            borderWidth: 1
+        }]
+    }
+})
